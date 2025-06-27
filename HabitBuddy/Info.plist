@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica.ttf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Bold.ttf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-BoldOblique.ttf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Compressed.otf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Light.ttf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Oblique.ttf</string>
+		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-RoundedBold.otf</string>
+	</array>
+	<key>SceneConfiguration</key>
+	<dict/>
+</dict>
+</plist>
