@@ -24,28 +24,28 @@ struct CardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .top) {
                         icon
-                            .foregroundColor(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnDark)
+                            .foregroundColor(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
                             .font(.system(size: 30))
                         Spacer()
                         Toggle("", isOn: $isToggleOn)
                             .toggleStyle(CheckboxToggleStyle())
-                            .foregroundStyle(Color.Font.primaryOnDark)
+                            .foregroundStyle(Color.Font.primaryOnLight)
                             .labelsHidden()
                     }
                     Spacer()
                     Text(title)
                         .font(.customTitle)
-                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnDark)
+                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
                     Text(subtitle)
                         .font(.customSubtitle)
-                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnDark)
+                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
                 }
                 .padding()
                 Spacer()
             }
         }
         .onTapGesture {
-            withAnimation {
+            withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) {
                 isToggleOn.toggle()
             }
         }

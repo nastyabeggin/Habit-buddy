@@ -18,7 +18,7 @@ struct CardDisplayData: Identifiable {
 struct HabitScrollView: View {
 
     let itemPerColumn: CGFloat
-    let horizontalSpacing: CGFloat = 16
+    let horizontalSpacing: CGFloat = .horizontalSpacing
     let height: CGFloat
     
     let cards: [CardDisplayData] = MockStore.cards
@@ -26,13 +26,14 @@ struct HabitScrollView: View {
     var body: some View {
         GeometryReader { geometry in
             ScrollView(.horizontal) {
-                HStack(alignment: .top, spacing: 0) {
+                HStack(alignment: .top, spacing: horizontalSpacing) {
                     ForEach(0 ..< cards.count) { i in
                         if i % Int(itemPerColumn) == 0 {
                             buildView(colIndex: i, geometry: geometry)
                         }
                     }
                 }
+                .padding(.horizontal)
             }.scrollIndicators(.hidden)
         }
     }
@@ -48,7 +49,7 @@ struct HabitScrollView: View {
         }
 
         if !colCards.isEmpty {
-            return ColumnView(cards: colCards, width: getWidth(geometry: geometry), height: height, horizontalSpacing: horizontalSpacing)
+            return ColumnView(cards: colCards, width: getWidth(geometry: geometry), height: height, verticalSpacing: .verticalSpacing)
         }
 
         return nil

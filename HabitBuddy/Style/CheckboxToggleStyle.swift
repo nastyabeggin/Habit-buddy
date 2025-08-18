@@ -13,7 +13,7 @@ struct CheckboxToggleStyle: ToggleStyle {
             .resizable()
             .frame(width: 24, height: 24)
             .onTapGesture {
-                withAnimation {
+                withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) {
                     configuration.isOn.toggle()
                 }
             }

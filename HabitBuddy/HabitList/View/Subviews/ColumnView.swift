@@ -12,10 +12,10 @@ struct ColumnView: View {
     let cards: [CardDisplayData]
     let width: CGFloat
     let height: CGFloat
-    let horizontalSpacing: CGFloat
+    let verticalSpacing: CGFloat
 
     var body: some View {
-        VStack(spacing: horizontalSpacing) {
+        VStack(spacing: verticalSpacing) {
             ForEach(cards) { card in
                 CardView(
                     title: card.title,
@@ -27,10 +27,9 @@ struct ColumnView: View {
             }
         }
         .padding(.vertical)
-        .padding(.horizontal, 8)
     }
 }
 
 #Preview {
-    ColumnView(cards: MockStore.cards, width: 200, height: 200, horizontalSpacing: 20)
+    ColumnView(cards: MockStore.cards, width: 200, height: 200, verticalSpacing: .verticalSpacing)
 }

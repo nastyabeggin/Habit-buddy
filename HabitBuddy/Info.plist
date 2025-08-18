@@ -4,13 +4,12 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica.ttf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Bold.ttf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-BoldOblique.ttf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Compressed.otf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Light.ttf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-Oblique.ttf</string>
-		<string>ReusableViews+Style/HelveticaFontFamily/Helvetica-RoundedBold.otf</string>
+		<string>Helvetica.ttf</string>
+		<string>Helvetica-Bold.ttf</string>
+		<string>Helvetica-BoldOblique.ttf</string>
+		<string>Helvetica-Light.ttf</string>
+		<string>Helvetica-Oblique.ttf</string>
+		<string>Obviously-Semibold.ttf</string>
 	</array>
 	<key>SceneConfiguration</key>
 	<dict/>
