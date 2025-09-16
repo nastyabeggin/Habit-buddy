@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: swift build -c debug
+
+      - name: Test
+        run: swift test -c debug
+
+      - name: Lint (SwiftLint)
+        run: |
+          brew install swiftlint || true
+          swiftlint --strict
+
+      - name: Format check (SwiftFormat)
+        run: |
+          brew install swiftformat || true
+          swiftformat --lint .
