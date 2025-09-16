@@ -19,21 +19,21 @@ extension Date {
         let dates = range?.compactMap { calendar.date(byAdding: .day, value: $0 - dayOfWeek, to: today) }
         return dates ?? []
     }
-    
+
     var nextWeek: [Date] {
         guard let lastDay = currentWeek.last else { return [] }
         let calendar = Calendar.current
         let nextWeekDay = calendar.date(byAdding: .day, value: 1, to: lastDay)
         return nextWeekDay?.currentWeek ?? []
     }
-    
+
     var previousWeek: [Date] {
         guard let lastDay = currentWeek.first else { return [] }
         let calendar = Calendar.current
         let nextWeekDay = calendar.date(byAdding: .day, value: -calendar.firstWeekday, to: lastDay)
         return nextWeekDay?.currentWeek ?? []
     }
-    
+
     var dayOfWeek: Int {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: self)
@@ -44,6 +44,6 @@ extension Date {
 
 extension Date: @retroactive Identifiable {
     public var id: Double {
-        self.timeIntervalSince1970
+        timeIntervalSince1970
     }
 }

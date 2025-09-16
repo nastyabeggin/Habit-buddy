@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct CardView: View {
-
     let title: String
     let subtitle: String
     let foregroundColor: Color

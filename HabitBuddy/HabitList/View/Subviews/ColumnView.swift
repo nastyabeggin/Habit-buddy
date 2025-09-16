@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ColumnView: View {
-
     let cards: [CardDisplayData]
     let width: CGFloat
     let height: CGFloat
@@ -23,7 +22,7 @@ struct ColumnView: View {
                     foregroundColor: card.foregroundColor,
                     icon: card.icon
                 )
-                    .frame(width: width, height: height)
+                .frame(width: width, height: height)
             }
         }
         .padding(.vertical)

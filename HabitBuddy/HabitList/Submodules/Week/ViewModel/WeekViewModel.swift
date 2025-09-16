@@ -9,8 +9,8 @@ import SwiftUI
 
 @MainActor
 class WeekViewModel: ObservableObject {
-
     // MARK: - Properties
+
     /// stub для отметок «выполнено/нет»
     /// в реальности заполнится при запросе на бэкенд
     @Published var habitStatus: [Date: Bool] = [:]

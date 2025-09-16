@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct DayCell: View {
-
     // MARK: - Properties
 
     let date: Date

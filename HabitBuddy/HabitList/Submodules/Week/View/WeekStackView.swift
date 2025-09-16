@@ -8,19 +8,18 @@
 import SwiftUI
 
 struct WeekStackView: View {
-    
     // MARK: - Properties
-    
+
     @Binding var selectedDate: Date
     @StateObject private var vm = WeekViewModel()
-    
+
     var body: some View {
         VStack(spacing: .verticalSpacing) {
             Text(selectedDate, format: .dateTime.month(.wide))
                 .font(.customTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
-            
+
             WeekView(
                 selectedDate: $selectedDate,
                 week: Week(dates: selectedDate.currentWeek),

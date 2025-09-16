@@ -41,11 +41,10 @@ struct HabitListView: View {
                     }
                 }
             }
-        case .error(_):
+        case .error:
             Text("")
             // TODO: Add error state
         }
-        
     }
 }
 

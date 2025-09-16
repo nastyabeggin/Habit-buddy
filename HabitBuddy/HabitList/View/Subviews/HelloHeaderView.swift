@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HelloHeaderView: View {
-
     // MARK: - Properties
 
     let name: String
@@ -27,9 +26,9 @@ struct HelloHeaderView: View {
     private func helloHeaderText() -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Good \(timeString()),")
-            .font(.customSubheader)
+                .font(.customSubheader)
             Text(name)
-            .font(.customHeader)
+                .font(.customHeader)
         }
     }
 
@@ -55,12 +54,12 @@ struct HelloHeaderView: View {
 
     private func timeString() -> String {
         switch Calendar.current.component(.hour, from: Date()) {
-        case 0..<12:
-            return "morning"
-        case 12..<18:
-            return "afternoon"
+        case 0 ..< 12:
+            "morning"
+        case 12 ..< 18:
+            "afternoon"
         default:
-            return "evening"
+            "evening"
         }
     }
 }

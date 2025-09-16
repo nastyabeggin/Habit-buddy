@@ -8,6 +8,8 @@
 
 /* Begin PBXFileReference section */
 		8DAAC3302E0ED71B000C2442 /* HabitBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DCB42662E7968DE00E7CD57 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
+		8DCB42672E7968DE00E7CD57 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +47,8 @@
 		8DAAC3272E0ED71B000C2442 = {
 			isa = PBXGroup;
 			children = (
+				8DCB42662E7968DE00E7CD57 /* .swift-version */,
+				8DCB42672E7968DE00E7CD57 /* .swiftlint.yml */,
 				8DAAC3322E0ED71C000C2442 /* HabitBuddy */,
 				8DAAC3312E0ED71B000C2442 /* Products */,
 			);
@@ -138,6 +142,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.swift-version",
 			);
 			name = SwiftFormat;
 			outputFileListPaths = (
@@ -146,7 +151,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftformat > /dev/null; then\n  swiftformat . --\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		8DCB41B92E79649700E7CD57 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -156,6 +161,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/.swiftlint.yml",
 			);
 			name = SwiftLint;
 			outputFileListPaths = (
@@ -164,7 +170,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nswiftlint --fix\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint > /dev/null;\nthen\n    swiftlint --fix --config .swiftlint.yml && swiftlint --config .swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -308,6 +314,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HabitBuddy/Preview Content\"";
 				DEVELOPMENT_TEAM = 452L9AYX26;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HabitBuddy/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -338,6 +345,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HabitBuddy/Preview Content\"";
 				DEVELOPMENT_TEAM = 452L9AYX26;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HabitBuddy/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

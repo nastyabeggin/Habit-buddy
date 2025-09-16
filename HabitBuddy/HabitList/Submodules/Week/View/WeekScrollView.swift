@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WeekView: View {
-
     // MARK: - Properties
 
     @Binding var selectedDate: Date
@@ -17,7 +16,7 @@ struct WeekView: View {
     let isHabitDone: (Date) -> Bool
 
     private let cellWidth: CGFloat = 60
-    
+
     var body: some View {
         ScrollView(.horizontal) {
             HStack(spacing: .horizontalSpacing) {
@@ -40,4 +39,3 @@ struct WeekView: View {
         .animation(.default, value: week)
     }
 }
-

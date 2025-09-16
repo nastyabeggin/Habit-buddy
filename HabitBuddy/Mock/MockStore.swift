@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MockStore {
+enum MockStore {
     static let cards = [
         CardDisplayData(
             title: "Reading",

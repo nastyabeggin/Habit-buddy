@@ -27,14 +27,14 @@ enum HabitListViewState: Equatable {
     static func == (lhs: HabitListViewState, rhs: HabitListViewState) -> Bool {
         switch (lhs, rhs) {
         case (.loading, .loading):
-            return true
-        case (let .error(lhsError), let .error(rhsError)):
-            return lhsError == rhsError
+            true
+        case let (.error(lhsError), .error(rhsError)):
+            lhsError == rhsError
         default:
-            return false
+            false
         }
     }
-    
+
     case loading
     case loaded(HabitListDisplayData)
     case error(String)

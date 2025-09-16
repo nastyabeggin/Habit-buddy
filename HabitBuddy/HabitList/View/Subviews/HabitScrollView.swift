@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct HabitScrollView: View {
-
     let itemPerColumn: CGFloat
     let horizontalSpacing: CGFloat = .horizontalSpacing
     let height: CGFloat
-    
+
     let cards: [CardDisplayData]
 
     var body: some View {
@@ -35,10 +34,10 @@ struct HabitScrollView: View {
 
     private func buildView(colIndex: Int, geometry: GeometryProxy) -> ColumnView? {
         var colCards = [CardDisplayData]()
-        for itemIndex in 0 ..< Int(itemPerColumn) {
-            if colIndex + itemIndex < cards.count {
-                colCards.append(cards[colIndex + itemIndex])
-            }
+        for itemIndex in 0 ..< Int(itemPerColumn)
+            where colIndex + itemIndex < cards.count
+        {
+            colCards.append(cards[colIndex + itemIndex])
         }
 
         if !colCards.isEmpty {
@@ -47,7 +46,7 @@ struct HabitScrollView: View {
 
         return nil
     }
-    
+
     private func getWidth(geometry: GeometryProxy) -> CGFloat {
         geometry.size.width * 0.65
     }
