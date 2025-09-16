@@ -43,6 +43,16 @@ jobs:
         run: |
           brew install swiftlint swiftformat || true
 
+      - name: SwiftLint version & which
+        run: |
+          which swiftlint
+          swiftlint version
+          swiftlint rules trailing_comma
+
+      - name: Show offending file with line numbers
+        run: |
+          nl -ba HabitBuddy/Mock/MockStore.swift | sed -n '1,120p'
+
       - name: SwiftLint
         run: swiftlint --strict --config .swiftlint.yml
 
