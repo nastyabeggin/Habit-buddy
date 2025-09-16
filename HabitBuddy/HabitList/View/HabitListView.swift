@@ -8,20 +8,44 @@
 import SwiftUI
 
 struct HabitListView: View {
+    @ObservedObject var viewModel = HabitListViewModel()
 
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: .verticalSpacing) {
-                    HelloHeaderView(name: "Stacy", hasNotifications: false)
-                    WeekStackView()
-                        .modifier(Shimmer())
-
-                    HabitScrollView(itemPerColumn: 3, height: geometry.size.height / CGFloat(6))
+        switch viewModel.state {
+        case .loading:
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: .verticalSpacing) {
+                        HelloHeaderView(name: "Placeholder", hasNotifications: false)
+                        WeekStackView(selectedDate: $viewModel.selectedDate)
+                        HabitScrollView(
+                            itemPerColumn: 3,
+                            height: geometry.size.height / CGFloat(6),
+                            cards: MockStore.cards
+                        )
+                    }
+                    .redacted(reason: .placeholder)
                 }
-                .redacted(reason: .placeholder)
             }
+        case let .loaded(habitListDisplayData):
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: .verticalSpacing) {
+                        HelloHeaderView(name: habitListDisplayData.name, hasNotifications: false)
+                        WeekStackView(selectedDate: $viewModel.selectedDate)
+                        HabitScrollView(
+                            itemPerColumn: 3,
+                            height: geometry.size.height / CGFloat(6),
+                            cards: habitListDisplayData.cards
+                        )
+                    }
+                }
+            }
+        case .error(_):
+            Text("")
+            // TODO: Add error state
         }
+        
     }
 }
 

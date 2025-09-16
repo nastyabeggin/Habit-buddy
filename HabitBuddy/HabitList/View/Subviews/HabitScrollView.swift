@@ -7,27 +7,20 @@
 
 import SwiftUI
 
-struct CardDisplayData: Identifiable {
-    let id = UUID()
-    let title: String
-    let subtitle: String
-    let foregroundColor: Color
-    let icon: Image
-}
-
 struct HabitScrollView: View {
 
     let itemPerColumn: CGFloat
     let horizontalSpacing: CGFloat = .horizontalSpacing
     let height: CGFloat
     
-    let cards: [CardDisplayData] = MockStore.cards
+    let cards: [CardDisplayData]
 
     var body: some View {
+        // TODO: Add empty state
         GeometryReader { geometry in
             ScrollView(.horizontal) {
                 HStack(alignment: .top, spacing: horizontalSpacing) {
-                    ForEach(0 ..< cards.count) { i in
+                    ForEach(0 ..< cards.count, id: \.self) { i in
                         if i % Int(itemPerColumn) == 0 {
                             buildView(colIndex: i, geometry: geometry)
                         }
@@ -61,5 +54,5 @@ struct HabitScrollView: View {
 }
 
 #Preview {
-    HabitScrollView(itemPerColumn: 3, height: 140)
+    HabitScrollView(itemPerColumn: 3, height: 140, cards: MockStore.cards)
 }

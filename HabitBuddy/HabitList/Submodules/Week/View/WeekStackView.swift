@@ -8,28 +8,31 @@
 import SwiftUI
 
 struct WeekStackView: View {
-
+    
     // MARK: - Properties
-
-    @StateObject private var vm = CalendarViewModel()
-
+    
+    @Binding var selectedDate: Date
+    @StateObject private var vm = WeekViewModel()
+    
     var body: some View {
         VStack(spacing: .verticalSpacing) {
-            Text(vm.selectedDate, format: .dateTime.month(.wide))
+            Text(selectedDate, format: .dateTime.month(.wide))
                 .font(.customTitle)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal)
-
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+            
             WeekView(
-                selectedDate: $vm.selectedDate,
-                week: vm.week,
+                selectedDate: $selectedDate,
+                week: Week(dates: selectedDate.currentWeek),
                 isHabitDone: vm.isHabitDone(on:)
             )
             .frame(height: 80)
         }
+        .onAppear { vm.update(for: selectedDate) }
+        .onChange(of: selectedDate) { _, new in vm.update(for: new) }
     }
 }
 
 #Preview {
-    WeekStackView()
+    WeekStackView(selectedDate: .constant(Date()))
 }
