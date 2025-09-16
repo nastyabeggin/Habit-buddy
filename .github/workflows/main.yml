@@ -1,0 +1,50 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # (опционально) кеш SPM, чтобы быстрее
+      # - name: Cache SPM
+      # uses: actions/cache@v4
+      # with:
+      #   path: |
+      #     ~/.swiftpm
+      #     ~/Library/Developer/Xcode/DerivedData
+      #   key: spm-${{ runner.os }}-${{ hashFiles('**/Package.resolved') }}
+      #   restore-keys: |
+      #     spm-${{ runner.os }}-
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build (Debug)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project HabitBuddy.xcodeproj \
+            -scheme HabitBuddy \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            clean build | xcpretty
+        shell: bash
+
+      # --- Lint/Format (только проверка, без автоисправлений) ---
+      - name: Install SwiftLint & SwiftFormat
+        run: |
+          brew install swiftlint swiftformat || true
+
+      - name: SwiftLint
+        run: swiftlint --strict --config .swiftlint.yml
+
+      - name: SwiftFormat (lint mode)
+        run: swiftformat --lint "$GITHUB_WORKSPACE" --exclude Pods,DerivedData
