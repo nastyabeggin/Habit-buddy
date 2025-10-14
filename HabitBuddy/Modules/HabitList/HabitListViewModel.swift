@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-class HabitListViewModel: ObservableObject {
+final class HabitListViewModel: ObservableObject {
     // MARK: - Properties
 
     @Published var state: HabitListViewState

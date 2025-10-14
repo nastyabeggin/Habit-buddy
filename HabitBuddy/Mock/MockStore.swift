@@ -56,6 +56,6 @@ enum MockStore {
             subtitle: "30 min jog",
             foregroundColor: Color.Background.greenAccent,
             icon: Image(systemName: "figure.walk")
-        )
+        ),
     ]
 }
