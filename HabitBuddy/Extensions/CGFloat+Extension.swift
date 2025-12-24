@@ -11,4 +11,7 @@ extension CGFloat {
     static let horizontalSpacing: CGFloat = 6
     static let verticalSpacing: CGFloat = 8
     static let bigVerticalSpacing: CGFloat = 10
+    static let doubleVerticalSpacing: CGFloat = 16
+
+    static let textFieldPadding: CGFloat = 12
 }

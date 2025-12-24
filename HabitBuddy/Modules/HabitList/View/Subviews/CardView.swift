@@ -8,54 +8,64 @@
 import SwiftUI
 
 struct CardView: View {
-    let title: String
-    let subtitle: String
+    let habit: StoredHabit
+    let selectedDate: Date
     let foregroundColor: Color
     let icon: Image
 
-    @State private var isToggleOn = false
+    @State private var isCompleted = false
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
-                .foregroundColor(isToggleOn ? .Background.pale : foregroundColor)
+                .foregroundColor(isCompleted ? .Background.pale : foregroundColor)
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .top) {
                         icon
-                            .foregroundColor(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
+                            .foregroundColor(isCompleted ? Color.Font.onPale : Color.Font.primaryOnLight)
                             .font(.system(size: 30))
                         Spacer()
-                        Toggle("", isOn: $isToggleOn)
+                        Toggle("", isOn: $isCompleted)
                             .toggleStyle(CheckboxToggleStyle())
                             .foregroundStyle(Color.Font.primaryOnLight)
                             .labelsHidden()
                     }
                     Spacer()
-                    Text(title)
+                    Text(habit.title)
                         .font(.customTitle)
-                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
-                    Text(subtitle)
+                        .foregroundStyle(isCompleted ? Color.Font.onPale : Color.Font.primaryOnLight)
+                    Text(habit.subtitle)
                         .font(.customSubtitle)
-                        .foregroundStyle(isToggleOn ? Color.Font.onPale : Color.Font.primaryOnLight)
+                        .foregroundStyle(isCompleted ? Color.Font.onPale : Color.Font.primaryOnLight)
                 }
                 .padding()
                 Spacer()
             }
         }
         .onTapGesture {
-            withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) {
-                isToggleOn.toggle()
-            }
+            toggleCompletion()
+        }
+        .onAppear {
+            loadCompletionStatus()
+        }
+        .onChange(of: selectedDate) { _, _ in
+            loadCompletionStatus()
         }
     }
-}
 
-#Preview {
-    CardView(
-        title: "Test",
-        subtitle: "Subtitle",
-        foregroundColor: Color.Background.greenAccent,
-        icon: Image(systemName: "book.fill")
-    )
+    private func loadCompletionStatus() {
+        isCompleted = HabitStorageService.shared.isHabitCompleted(habit, on: selectedDate)
+    }
+
+    private func toggleCompletion() {
+        withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) {
+            if isCompleted {
+                HabitStorageService.shared.unmarkHabitCompleted(habit, on: selectedDate)
+            } else {
+                HabitStorageService.shared.markHabitCompleted(habit, on: selectedDate)
+            }
+            isCompleted.toggle()
+        }
+    }
 }

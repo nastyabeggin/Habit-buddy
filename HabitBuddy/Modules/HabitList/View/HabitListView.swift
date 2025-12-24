@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HabitListView: View {
-    @ObservedObject var viewModel = HabitListViewModel()
+    @State var viewModel = HabitListViewModel()
     @State private var showCreate = false
 
     var body: some View {
@@ -21,12 +21,17 @@ struct HabitListView: View {
                 FloatingAddButton {
                     showCreate = true
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 30)
                 .ignoresSafeArea(.keyboard)
             }
         }
+        .onAppear {
+            viewModel.loadData()
+        }
         .sheet(isPresented: $showCreate) {
-            EmptyView()
+            viewModel.loadData()
+        } content: {
+            CreateHabitView()
         }
     }
 
@@ -42,18 +47,20 @@ struct HabitListView: View {
                 HabitScrollView(
                     itemPerColumn: 3,
                     height: geometry.size.height / CGFloat(6),
-                    cards: MockStore.cards
+                    habits: [],
+                    selectedDate: viewModel.selectedDate
                 )
             }
             .redacted(reason: .placeholder)
-        case let .loaded(habitListDisplayData):
+        case .loaded:
             VStack(spacing: .verticalSpacing) {
-                HelloHeaderView(name: habitListDisplayData.name, hasNotifications: false)
+                HelloHeaderView(name: "Anastasiya", hasNotifications: false)
                 WeekStackView(selectedDate: $viewModel.selectedDate)
                 HabitScrollView(
                     itemPerColumn: 3,
                     height: geometry.size.height / CGFloat(6),
-                    cards: habitListDisplayData.cards
+                    habits: viewModel.habits,
+                    selectedDate: viewModel.selectedDate
                 )
             }
         case .error:

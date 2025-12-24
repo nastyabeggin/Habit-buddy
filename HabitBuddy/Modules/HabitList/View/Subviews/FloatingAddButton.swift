@@ -25,10 +25,6 @@ struct FloatingAddButton: View {
 
     @ViewBuilder
     private var backgroundShape: some View {
-        if #available(iOS 26.0, *) {
-            Circle().glassEffect(.regular.tint(.accent).interactive())
-        } else {
-            Circle().fill(Color.accentColor)
-        }
+        Circle().fill(Color.Background.accent)
     }
 }
