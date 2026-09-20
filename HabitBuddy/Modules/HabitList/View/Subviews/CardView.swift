@@ -26,7 +26,7 @@ struct CardView: View {
                             .foregroundColor(isCompleted ? Color.Font.onPale : Color.Font.primaryOnLight)
                             .font(.system(size: 30))
                         Spacer()
-                        Toggle("", isOn: $isCompleted)
+                        Toggle("", isOn: completionBinding)
                             .toggleStyle(CheckboxToggleStyle())
                             .foregroundStyle(Color.Font.primaryOnLight)
                             .labelsHidden()
@@ -52,6 +52,13 @@ struct CardView: View {
         .onChange(of: selectedDate) { _, _ in
             loadCompletionStatus()
         }
+    }
+
+    private var completionBinding: Binding<Bool> {
+        Binding(
+            get: { isCompleted },
+            set: { _ in toggleCompletion() }
+        )
     }
 
     private func loadCompletionStatus() {
