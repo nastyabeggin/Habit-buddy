@@ -18,24 +18,36 @@ struct WeekView: View {
     private let cellWidth: CGFloat = 60
 
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: .horizontalSpacing) {
-                ForEach(week.dates, id: \.self) { date in
-                    let done = isHabitDone(date)
-                    DayCell(
-                        date: date,
-                        isSelected: Calendar.current.isDate(date, inSameDayAs: selectedDate),
-                        backgroundColor: done ? Color.Background.greenAccent : Color.Background.pale
-                    )
-                    .frame(width: cellWidth)
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) { selectedDate = date }
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                HStack(spacing: .horizontalSpacing) {
+                    ForEach(week.dates, id: \.self) { date in
+                        let done = isHabitDone(date)
+                        DayCell(
+                            date: date,
+                            isSelected: Calendar.current.isDate(date, inSameDayAs: selectedDate),
+                            backgroundColor: done ? Color.Background.greenAccent : Color.Background.pale
+                        )
+                        .frame(width: cellWidth)
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.25, dampingFraction: 1.0)) { selectedDate = date }
+                        }
                     }
                 }
+                .padding(.horizontal)
             }
-            .padding(.horizontal)
+            .scrollIndicators(.hidden)
+            .animation(.default, value: week)
+            .onAppear {
+                Task { @MainActor in
+                    proxy.scrollTo(selectedDate.startOfDay, anchor: .center)
+                }
+            }
+            .onChange(of: selectedDate) { _, newDate in
+                withAnimation {
+                    proxy.scrollTo(newDate.startOfDay, anchor: .center)
+                }
+            }
         }
-        .scrollIndicators(.hidden)
-        .animation(.default, value: week)
     }
 }

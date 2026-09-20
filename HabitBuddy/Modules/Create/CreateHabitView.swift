@@ -17,6 +17,12 @@ struct CreateHabitView: View {
         case description
     }
 
+    private enum Constants {
+        /// The sheet's presentation animation steals focus if it is set straight
+        /// away, so wait for it to settle first.
+        static let initialFocusDelay: Duration = .milliseconds(350)
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -44,6 +50,10 @@ struct CreateHabitView: View {
                     WeekdayPicker(selection: $viewModel.state.days)
                 }
                 .padding()
+            }
+            .task {
+                try? await Task.sleep(for: Constants.initialFocusDelay)
+                focusedField = .habit
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(viewModel.state.navigationTitle)
