@@ -34,7 +34,7 @@ import SwiftUI
     }
 
     func updateHabitsForSelectedDate() {
-        let storedHabits = HabitStorageService.shared.loadHabits(for: selectedDate.dayOfWeek)
+        let storedHabits = HabitStorageService.shared.loadHabits(for: selectedDate.weekday)
         self.habits = storedHabits
 
         if storedHabits.isEmpty {

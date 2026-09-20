@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WeekdayPicker: View {
+    /// Foundation weekday numbers (1 = Sunday ... 7 = Saturday), matching
+    /// `Calendar.component(.weekday:)` and `StoredHabit.selectedDays`.
     @Binding var selection: Set<Int>
 
     private let selectedFill: Color = .accentColor
@@ -19,10 +21,9 @@ struct WeekdayPicker: View {
     private let spacing: CGFloat = 10
     private let calendar: Calendar = .current
 
-    private var orderedSymbols: [String] {
-        let syms = calendar.shortWeekdaySymbols
-        let first = calendar.firstWeekday - 1
-        return Array(syms[first...] + syms[..<first])
+    /// Weekday numbers rotated so the locale's first weekday comes first.
+    private var orderedWeekdays: [Int] {
+        (0 ..< 7).map { ((calendar.firstWeekday - 1 + $0) % 7) + 1 }
     }
 
     var body: some View {
@@ -31,21 +32,21 @@ struct WeekdayPicker: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.customBoldSubtitle)
             HStack(spacing: spacing) {
-                ForEach(orderedSymbols.indices, id: \.self) { idx in
-                    let isOn = selection.contains(idx)
+                ForEach(orderedWeekdays, id: \.self) { weekday in
+                    let isOn = selection.contains(weekday)
                     Button {
-                        toggle(idx)
+                        toggle(weekday)
                     } label: {
                         ZStack {
                             Circle()
                                 .fill(isOn ? selectedFill : unselectedFill)
-                            Text(orderedSymbols[idx].prefix(2).uppercased())
+                            Text(shortSymbol(for: weekday).prefix(2).uppercased())
                                 .font(Font.customBoldSubtitle)
                                 .foregroundStyle(isOn ? textSelected : textUnselected)
                         }
                         .frame(width: size, height: size)
                         .contentShape(Circle())
-                        .accessibilityLabel(dayAccessibilityLabel(at: idx))
+                        .accessibilityLabel(longSymbol(for: weekday))
                         .accessibilityValue(isOn ? "selected" : "not selected")
                     }
                     .buttonStyle(.plain)
@@ -57,7 +58,7 @@ struct WeekdayPicker: View {
                         if selection.count == 7 {
                             selection.removeAll()
                         } else {
-                            selection = Set(0 ..< 7)
+                            selection = Set(1 ... 7)
                         }
                     }
                 } label: {
@@ -87,22 +88,23 @@ struct WeekdayPicker: View {
         }
     }
 
-    private func toggle(_ idx: Int) {
-        if selection.contains(idx) {
-            selection.remove(idx)
+    private func toggle(_ weekday: Int) {
+        if selection.contains(weekday) {
+            selection.remove(weekday)
         } else {
-            selection.insert(idx)
+            selection.insert(weekday)
         }
     }
 
-    private func dayAccessibilityLabel(at idx: Int) -> String {
-        let long = calendar.weekdaySymbols
-        let first = calendar.firstWeekday - 1
-        let orderedLong = Array(long[first...] + long[..<first])
-        return idx < orderedLong.count ? orderedLong[idx] : orderedSymbols[idx]
+    private func shortSymbol(for weekday: Int) -> String {
+        calendar.shortWeekdaySymbols[weekday - 1]
+    }
+
+    private func longSymbol(for weekday: Int) -> String {
+        calendar.weekdaySymbols[weekday - 1]
     }
 }
 
 #Preview {
-    WeekdayPicker(selection: .constant([0, 1, 2]))
+    WeekdayPicker(selection: .constant([2, 3, 4]))
 }

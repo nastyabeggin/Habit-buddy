@@ -35,7 +35,8 @@ final class HabitStorageService {
         saveContext()
     }
 
-    func loadHabits(for dayIndex: Int) -> [StoredHabit] {
+    /// - Parameter weekday: Foundation weekday number (1 = Sunday ... 7 = Saturday).
+    func loadHabits(for weekday: Int) -> [StoredHabit] {
         guard let context = modelContext else {
             print("⚠️ ModelContext not initialized")
             return []
@@ -47,7 +48,7 @@ final class HabitStorageService {
 
         do {
             let allHabits = try context.fetch(descriptor)
-            return allHabits.filter { $0.selectedDays.contains(dayIndex) }
+            return allHabits.filter { $0.selectedDays.contains(weekday) }
         } catch {
             print("❌ Failed to fetch habits: \(error)")
             return []

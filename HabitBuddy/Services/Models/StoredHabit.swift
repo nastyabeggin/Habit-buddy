@@ -16,6 +16,7 @@ final class StoredHabit {
     var subtitle: String
     var colorHex: String
     var iconName: String
+    /// Foundation weekday numbers (1 = Sunday ... 7 = Saturday).
     var selectedDays: [Int]
     var createdAt: Date
 

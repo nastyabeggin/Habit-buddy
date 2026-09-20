@@ -34,11 +34,9 @@ extension Date {
         return nextWeekDay?.currentWeek ?? []
     }
 
-    var dayOfWeek: Int {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: self)
-        let dayOfWeek = calendar.component(.weekday, from: today)
-        return dayOfWeek == 1 ? 7 : dayOfWeek - 1
+    /// Foundation weekday number: 1 = Sunday ... 7 = Saturday.
+    var weekday: Int {
+        Calendar.current.component(.weekday, from: startOfDay)
     }
 }
 
