@@ -11,8 +11,7 @@ import SwiftUI
 class WeekViewModel: ObservableObject {
     // MARK: - Properties
 
-    /// stub для отметок «выполнено/нет»
-    /// в реальности заполнится при запросе на бэкенд
+    /// Per-day completion marks, keyed by start of day.
     @Published var habitStatus: [Date: Bool] = [:]
 
     // MARK: - Public
@@ -23,7 +22,18 @@ class WeekViewModel: ObservableObject {
 
     func update(for selectedDate: Date) {
         let week = selectedDate.currentWeek
-        // TODO: заменить на данные с бэка
-        habitStatus = Dictionary(uniqueKeysWithValues: week.map { ($0.startOfDay, $0 < Date()) })
+        habitStatus = Dictionary(uniqueKeysWithValues: week.map { date in
+            (date.startOfDay, isDayComplete(date))
+        })
+    }
+
+    // MARK: - Private
+
+    /// A day counts as done once every habit scheduled for it is completed.
+    private func isDayComplete(_ date: Date) -> Bool {
+        let storage = HabitStorageService.shared
+        let habits = storage.loadHabits(for: date.weekday)
+        guard !habits.isEmpty else { return false }
+        return habits.allSatisfy { storage.isHabitCompleted($0, on: date) }
     }
 }
