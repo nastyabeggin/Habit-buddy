@@ -4,80 +4,92 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-HabitBuddy is a native iOS habit tracking app built with SwiftUI. The app uses MVVM architecture with SwiftUI's `@Published` properties for state management. Currently uses mock data (`MockStore`) - real data persistence is planned.
+HabitBuddy is a native iOS habit tracking app built with SwiftUI + SwiftData. Single app target, no package manifest, no test target. Swift 6 (`.swift-version`, `SWIFT_VERSION = 6.0`), iOS deployment target 18.6.
 
 ## Build and Development Commands
 
-### Build
 ```bash
-xcodebuild -project HabitBuddy.xcodeproj -scheme HabitBuddy -configuration Debug -destination 'generic/platform=iOS Simulator' clean build
-```
+# Build (what CI runs)
+xcodebuild -project HabitBuddy.xcodeproj -scheme HabitBuddy -configuration Debug \
+  -destination 'generic/platform=iOS Simulator' clean build
 
-### Linting
-```bash
-# Run SwiftLint (strict mode, treats warnings as errors)
+# Build & run on a concrete simulator
+xcodebuild -project HabitBuddy.xcodeproj -scheme HabitBuddy \
+  -destination 'platform=iOS Simulator,name=iPhone 16' build
+
+# Lint (strict — any warning fails; warning_threshold is 1)
 swiftlint --strict --config .swiftlint.yml
 
-# Run SwiftFormat in lint mode (check only, no changes)
+# Format check (never auto-fix in CI)
 swiftformat --lint . --exclude Pods,DerivedData
 ```
 
-### CI Pipeline
-The project uses GitHub Actions (`.github/workflows/main.yml`) which runs on pushes/PRs to `main`:
-- Builds the project
-- Runs SwiftLint in strict mode
-- Runs SwiftFormat in lint mode
+There is no test target, so there are no test commands. If tests are added, they need a new target in `HabitBuddy.xcodeproj` and a CI step.
+
+The `HabitBuddy` scheme is not shared (`xcshareddata/xcschemes` is absent); Xcode autocreates it. If scheme resolution ever fails in a fresh checkout, share the scheme rather than working around it.
+
+`.github/workflows/main.yml` runs build → SwiftLint → SwiftFormat on pushes/PRs to `main`.
 
 ## Architecture
 
-### Module Structure
-The codebase follows a module-based architecture under `HabitBuddy/Modules/`:
+### Two parallel model layers
 
-**HabitList Module** (`Modules/HabitList/`)
-- Main screen showing user's habits with week view
-- ViewModels use `@MainActor` and `@Published` state properties
-- State pattern: `.loading`, `.loaded(data)`, `.error`
-- Contains submodule `Week/` for week calendar functionality
-- View hierarchy: `HabitListView` → `WeekStackView` + `HabitScrollView` → `CardView` / `ColumnView`
+This is the single most important thing to understand before touching data code.
 
-**Create Module** (`Modules/Create/`)
-- Sheet presentation for creating new habits
-- Uses `@FocusState` for field management
-- Reusable components: `LabeledInputField`, `LabeledPicker`
+- **Persistence models** (`Services/Models/`): `StoredHabit` and `HabitCompletion` are SwiftData `@Model` classes. `StoredHabit` owns `completions` with a `.cascade` delete rule; `HabitCompletion` holds the inverse `habit` reference.
+- **Display models** (`Modules/HabitList/Model/`, `*ViewState.swift`): `Habit`, `CardDisplayData`, `HabitListDisplayData` are plain value types built for rendering.
 
-### Key Patterns
+`StoredHabit.toHabit()` was written to bridge the two, but **the display layer is currently dead code**: views take `StoredHabit` directly, and `toHabit()`, `Habit`, `HabitList`, `MockStore` and the `CardDisplayData` array built in `HabitListViewModel` have no live readers. Treat `StoredHabit` as the real model and don't add to the display layer without reviving it deliberately.
 
-**State Management**
-- ViewModels are `@MainActor final class` and inherit from `ObservableObject`
-- Each view has corresponding `ViewState` enum (e.g., `HabitListViewState`, `CreateHabitViewState`)
-- State changes trigger view updates via `@Published` properties
+Color crosses into persistence as a hex string: `StoredHabit.colorHex` ⇄ `Color(hex:)` / `Color.toHex()` in `Color+Extension.swift`. Never store a `Color` in a `@Model`.
 
-**Styling System**
-- Centralized design tokens in `Extensions/`:
-  - `Color+Extension.swift`: `Color.Font.*`, `Color.Background.*` (includes accent colors)
-  - `Font+Extension.swift`: Custom fonts (Helvetica, Obviously-Semibold)
-  - `CGFloat+Extension.swift`: Standard spacing values (`.horizontalSpacing`, `.verticalSpacing`, etc.)
-- Custom SwiftUI styles in `Style/` (button, checkbox, shimmer effects)
+### Persistence flow
 
-**Data Layer**
-- Currently uses `MockStore.swift` for placeholder data
-- Models are in `Model/` subdirectories within each module
-- ViewModels contain placeholder comments for future real data integration
+`HabitBuddyApp.init()` builds the `ModelContainer` for the `[StoredHabit, HabitCompletion]` schema, injects it via `.modelContainer(_:)`, **and** calls `HabitStorageService.initialize(with: modelContainer.mainContext)`.
 
-### Navigation
-- Root: `HabitBuddyApp` → `ContentView` → `HabitListView`
-- CreateHabitView presented as `.sheet()`
+`HabitStorageService` is a `@MainActor` singleton (`.shared`) holding an optional `ModelContext`. Every method guards on that optional and fails soft (prints, returns empty/`false`). ViewModels and some views call `HabitStorageService.shared` directly rather than receiving an injected dependency — there is no DI container. Adding a `@Model` type means adding it to the `Schema` array in `HabitBuddyApp`.
 
-## SwiftLint Configuration
+Completions are keyed by `Calendar.current.startOfDay(for:)`; always normalize a date to start-of-day before comparing or writing completion records.
 
-The project has a custom `.swiftlint.yml` with many disabled rules and opt-in rules:
-- **trailing_comma rule is disabled** (Swift 6 compatibility)
-- force_cast, force_unwrapping, identifier_name are disabled
-- Opt-in rules include: implicit_return, sorted_imports, weak_delegate, shorthand_optional_binding
-- Analyzer rules: unused_import, unused_declaration
+`Mock/MockStore.swift` is leftover sample `CardDisplayData` — it is no longer the data source. Don't wire new features to it.
 
-When writing code, follow the existing patterns seen in SwiftLint opt-in rules (e.g., use sorted imports, implicit returns where appropriate).
+### Day-of-week convention (currently inconsistent)
 
-## Swift Version
+Two incompatible encodings of "which day" are in the codebase:
 
-Target Swift version is specified in `.swift-version` file at project root.
+- `Date.dayOfWeek` (`Date+Extension.swift`) returns **Monday = 1 … Sunday = 7**. `HabitStorageService.loadHabits(for:)` filters `selectedDays.contains(dayIndex)` with it.
+- `WeekdayPicker` (`Modules/Create/View/LabeledPicker.swift`) writes **0 … 6**, as an index into `Calendar.current` weekday symbols rotated to start at `firstWeekday`.
+
+These do not line up, so saved habits surface on the wrong day. Pick one convention before adding any day-based feature.
+
+`Date+Extension` also provides `currentWeek` / `nextWeek` / `previousWeek` for the week strip, and retroactively conforms `Date` to `Identifiable`.
+
+### Observation
+
+ViewModels are `@MainActor @Observable final class` (Swift Observation), held by views as `@State var viewModel = ...`. `WeekViewModel` is the one holdover still on `ObservableObject` + `@Published`; new ViewModels should use `@Observable`.
+
+Each screen pairs a ViewModel with a `ViewState` file. Two shapes are in use:
+- `HabitListViewState` — a `.loading` / `.loaded(data)` / `.error(String)` enum, switched over in the view body (`.loading` renders the loaded layout with `.redacted(reason: .placeholder)`).
+- `CreateHabitViewState` — a plain mutable struct of form fields with a `static var defaultState`.
+
+Refresh is manual and pull-based: `HabitListView` calls `viewModel.loadData()` in `.onAppear` and in the `.sheet` dismiss handler, and `HabitListViewModel.selectedDate` refetches in `didSet`. Nothing observes SwiftData with `@Query`, so a write made elsewhere will not propagate on its own — trigger a reload.
+
+### Module layout
+
+`HabitBuddy/Modules/<Feature>/` holds `<Feature>View.swift`, `<Feature>ViewModel.swift`, `<Feature>ViewState.swift`, plus `View/`, `Model/`, `Submodules/`. Navigation is shallow: `HabitBuddyApp` → `ContentView` → `HabitListView`, with `CreateHabitView` presented as a `.sheet`.
+
+### Styling tokens
+
+Never hardcode colors, fonts, or spacing — everything routes through `Extensions/`:
+- `Color.Font.*`, `Color.Background.*` (incl. `greenAccent` / `roseAccent` / `yellowAccent`), `Color.TextField.border`
+- `Font.customHeader`, `.customTitle`, `.customSubtitle`, `.primaryCompressed` (Helvetica, Obviously-Semibold)
+- `CGFloat.horizontalSpacing`, `.verticalSpacing`, `.doubleVerticalSpacing`, `.textFieldPadding`
+
+Reusable SwiftUI styles live in `Style/` (`ButtonCustomStyle`, `CheckboxToggleStyle`, `Shimmer`).
+
+## Conventions
+
+- **SwiftLint** (`.swiftlint.yml`, scoped to `HabitBuddy/`): `trailing_comma` is disabled for Swift 6, as are `line_length`, `force_unwrapping`, `identifier_name`, `type_name`. Opt-in rules that bite most often: `sorted_imports`, `implicit_return`, `redundant_type_annotation`, `explicit_init`, `first_where` / `last_where`, `switch_case_on_newline`, `let_var_whitespace`. Analyzer rules `unused_import` and `unused_declaration` are on.
+- Files start with the standard Xcode header comment (`//  Name.swift` / `//  HabitBuddy` / `//  Created by …`). Keep it on new files.
+- Types are sectioned with `// MARK: - Properties`, `// MARK: - Lifecycle`, `// MARK: - Public`, `// MARK: - Private`.
+- Some comments, `TODO`s, and a few user-facing strings are in Russian. There is no localization layer; strings are inline literals.
