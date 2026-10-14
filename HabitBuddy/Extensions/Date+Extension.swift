@@ -11,34 +11,31 @@ extension Date {
     private var calendar: Calendar { .current }
     var startOfDay: Date { calendar.startOfDay(for: self) }
 
+    /// The seven days of the week containing this date, starting at the
+    /// locale's first weekday.
     var currentWeek: [Date] {
         let calendar = Calendar.current
-        let today = calendar.startOfDay(for: self)
-        let dayOfWeek = calendar.component(.weekday, from: today) - (calendar.firstWeekday - 1)
-        let range = calendar.range(of: .weekday, in: .weekOfYear, for: today)
-        let dates = range?.compactMap { calendar.date(byAdding: .day, value: $0 - dayOfWeek, to: today) }
-        return dates ?? []
+        guard let interval = calendar.dateInterval(of: .weekOfYear, for: startOfDay) else { return [] }
+        return (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: interval.start) }
     }
 
     var nextWeek: [Date] {
-        guard let lastDay = currentWeek.last else { return [] }
-        let calendar = Calendar.current
-        let nextWeekDay = calendar.date(byAdding: .day, value: 1, to: lastDay)
-        return nextWeekDay?.currentWeek ?? []
+        guard let lastDay = currentWeek.last,
+              let dayInNextWeek = Calendar.current.date(byAdding: .day, value: 1, to: lastDay)
+        else { return [] }
+        return dayInNextWeek.currentWeek
     }
 
     var previousWeek: [Date] {
-        guard let lastDay = currentWeek.first else { return [] }
-        let calendar = Calendar.current
-        let nextWeekDay = calendar.date(byAdding: .day, value: -calendar.firstWeekday, to: lastDay)
-        return nextWeekDay?.currentWeek ?? []
+        guard let firstDay = currentWeek.first,
+              let dayInPreviousWeek = Calendar.current.date(byAdding: .day, value: -1, to: firstDay)
+        else { return [] }
+        return dayInPreviousWeek.currentWeek
     }
 
-    var dayOfWeek: Int {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: self)
-        let dayOfWeek = calendar.component(.weekday, from: today)
-        return dayOfWeek == 1 ? 7 : dayOfWeek - 1
+    /// Foundation weekday number: 1 = Sunday ... 7 = Saturday.
+    var weekday: Int {
+        Calendar.current.component(.weekday, from: startOfDay)
     }
 }
 

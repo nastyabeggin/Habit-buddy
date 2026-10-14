@@ -8,27 +8,24 @@
 import SwiftUI
 
 struct ColumnView: View {
-    let cards: [CardDisplayData]
+    let habits: [StoredHabit]
+    let selectedDate: Date
     let width: CGFloat
     let height: CGFloat
     let verticalSpacing: CGFloat
 
     var body: some View {
         VStack(spacing: verticalSpacing) {
-            ForEach(cards) { card in
+            ForEach(habits, id: \.id) { habit in
                 CardView(
-                    title: card.title,
-                    subtitle: card.subtitle,
-                    foregroundColor: card.foregroundColor,
-                    icon: card.icon
+                    habit: habit,
+                    selectedDate: selectedDate,
+                    foregroundColor: Color(hex: habit.colorHex),
+                    icon: Image(systemName: habit.iconName)
                 )
                 .frame(width: width, height: height)
             }
         }
         .padding(.vertical)
     }
-}
-
-#Preview {
-    ColumnView(cards: MockStore.cards, width: 200, height: 200, verticalSpacing: .verticalSpacing)
 }

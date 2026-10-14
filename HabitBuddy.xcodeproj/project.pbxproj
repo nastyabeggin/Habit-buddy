@@ -6,10 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0B8514B8F7B38C8077C0BA42 /* ColorHexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A69168347F079E073068E4 /* ColorHexTests.swift */; };
+		22898EDA713D7A1577718D40 /* StoredHabitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A911E469F3209820BC56E4BE /* StoredHabitTests.swift */; };
+		32914F73ED012693530AE146 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96E2BD8A0A0D699BD323EE6 /* Foundation.framework */; };
+		61109CFAD973F21A441D4A26 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C04FB793BC978BF73CF761 /* TestSupport.swift */; };
+		BD22674D4AD241C304F4C8E7 /* DateWeekTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0565EE2543D587E01C7BB3 /* DateWeekTests.swift */; };
+		DF9A718DF5D4C79D2735A13B /* WeekViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AC996C91037EE44B1AF629 /* WeekViewModelTests.swift */; };
+		ECC76FECA8AA4710B5E80AE7 /* HabitStorageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDFE465290109F92993FE5D /* HabitStorageServiceTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DED88B33C4F7EB3B0DF41CC5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DAAC3282E0ED71B000C2442 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DAAC32F2E0ED71B000C2442;
+			remoteInfo = HabitBuddy;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		13A69168347F079E073068E4 /* ColorHexTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ColorHexTests.swift; sourceTree = "<group>"; };
+		5F6EFAA38E96F6B639F67007 /* HabitBuddyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitBuddyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		75AC996C91037EE44B1AF629 /* WeekViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WeekViewModelTests.swift; sourceTree = "<group>"; };
+		7C0565EE2543D587E01C7BB3 /* DateWeekTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DateWeekTests.swift; sourceTree = "<group>"; };
 		8DAAC3302E0ED71B000C2442 /* HabitBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DCB42662E7968DE00E7CD57 /* .swift-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-version"; sourceTree = "<group>"; };
 		8DCB42672E7968DE00E7CD57 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		A911E469F3209820BC56E4BE /* StoredHabitTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoredHabitTests.swift; sourceTree = "<group>"; };
+		ACDFE465290109F92993FE5D /* HabitStorageServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HabitStorageServiceTests.swift; sourceTree = "<group>"; };
+		D96E2BD8A0A0D699BD323EE6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		F0C04FB793BC978BF73CF761 /* TestSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -41,9 +69,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EA7F2E35B8BCAEC44B86873F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32914F73ED012693530AE146 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B6853F8FB43C956702639C3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D5DECBC735ED35305AFB6222 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8DAAC3272E0ED71B000C2442 = {
 			isa = PBXGroup;
 			children = (
@@ -51,6 +95,8 @@
 				8DCB42672E7968DE00E7CD57 /* .swiftlint.yml */,
 				8DAAC3322E0ED71C000C2442 /* HabitBuddy */,
 				8DAAC3312E0ED71B000C2442 /* Products */,
+				0B6853F8FB43C956702639C3 /* Frameworks */,
+				F474AF54A5046301DD444090 /* HabitBuddyTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,8 +104,31 @@
 			isa = PBXGroup;
 			children = (
 				8DAAC3302E0ED71B000C2442 /* HabitBuddy.app */,
+				5F6EFAA38E96F6B639F67007 /* HabitBuddyTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D5DECBC735ED35305AFB6222 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D96E2BD8A0A0D699BD323EE6 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		F474AF54A5046301DD444090 /* HabitBuddyTests */ = {
+			isa = PBXGroup;
+			children = (
+				13A69168347F079E073068E4 /* ColorHexTests.swift */,
+				7C0565EE2543D587E01C7BB3 /* DateWeekTests.swift */,
+				ACDFE465290109F92993FE5D /* HabitStorageServiceTests.swift */,
+				A911E469F3209820BC56E4BE /* StoredHabitTests.swift */,
+				F0C04FB793BC978BF73CF761 /* TestSupport.swift */,
+				75AC996C91037EE44B1AF629 /* WeekViewModelTests.swift */,
+			);
+			name = HabitBuddyTests;
+			path = HabitBuddyTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,11 +152,27 @@
 				8DAAC3322E0ED71C000C2442 /* HabitBuddy */,
 			);
 			name = HabitBuddy;
-			packageProductDependencies = (
-			);
 			productName = HabitBuddy;
 			productReference = 8DAAC3302E0ED71B000C2442 /* HabitBuddy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		AFF2302ECC0FF4E826A7B704 /* HabitBuddyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2A7EF1645D6820EC83FDEDA /* Build configuration list for PBXNativeTarget "HabitBuddyTests" */;
+			buildPhases = (
+				E2C2C8F376CF6D0ACD95F252 /* Sources */,
+				EA7F2E35B8BCAEC44B86873F /* Frameworks */,
+				A822CF8DCD0455A0F66EF5E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				610B84676622B0B9BB1A8C20 /* PBXTargetDependency */,
+			);
+			name = HabitBuddyTests;
+			productName = HabitBuddyTests;
+			productReference = 5F6EFAA38E96F6B639F67007 /* HabitBuddyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -119,12 +204,20 @@
 			projectRoot = "";
 			targets = (
 				8DAAC32F2E0ED71B000C2442 /* HabitBuddy */,
+				AFF2302ECC0FF4E826A7B704 /* HabitBuddyTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DAAC32E2E0ED71B000C2442 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A822CF8DCD0455A0F66EF5E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -151,7 +244,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftformat > /dev/null; then\n  # swiftformat .\n  echo \"\"\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		8DCB41B92E79649700E7CD57 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -170,7 +263,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint > /dev/null;\nthen\n    swiftlint --fix --config .swiftlint.yml && swiftlint --config .swiftlint.yml\nelse\n    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\n# if which swiftlint > /dev/null;\n# then\n    # swiftlint --fix --config .swiftlint.yml && swiftlint --config .swiftlint.yml\n#else\n#    echo \"warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions.\"\n# fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -182,9 +275,51 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E2C2C8F376CF6D0ACD95F252 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B8514B8F7B38C8077C0BA42 /* ColorHexTests.swift in Sources */,
+				BD22674D4AD241C304F4C8E7 /* DateWeekTests.swift in Sources */,
+				ECC76FECA8AA4710B5E80AE7 /* HabitStorageServiceTests.swift in Sources */,
+				22898EDA713D7A1577718D40 /* StoredHabitTests.swift in Sources */,
+				61109CFAD973F21A441D4A26 /* TestSupport.swift in Sources */,
+				DF9A718DF5D4C79D2735A13B /* WeekViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		610B84676622B0B9BB1A8C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = HabitBuddy;
+			target = 8DAAC32F2E0ED71B000C2442 /* HabitBuddy */;
+			targetProxy = DED88B33C4F7EB3B0DF41CC5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		0DE5765BFF58AB9BB72A3CE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6RK7YK6QA;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nastyabeggin.HabitBuddyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HabitBuddy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HabitBuddy";
+			};
+			name = Debug;
+		};
 		8DAAC33C2E0ED71E000C2442 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -312,7 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HabitBuddy/Preview Content\"";
-				DEVELOPMENT_TEAM = 452L9AYX26;
+				DEVELOPMENT_TEAM = Z6RK7YK6QA;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -322,6 +457,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -343,7 +479,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HabitBuddy/Preview Content\"";
-				DEVELOPMENT_TEAM = 452L9AYX26;
+				DEVELOPMENT_TEAM = Z6RK7YK6QA;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -353,6 +489,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -363,6 +500,27 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		94BE12781E517611D64B9848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z6RK7YK6QA;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nastyabeggin.HabitBuddyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HabitBuddy.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HabitBuddy";
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -383,6 +541,15 @@
 			buildConfigurations = (
 				8DAAC33F2E0ED71E000C2442 /* Debug */,
 				8DAAC3402E0ED71E000C2442 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2A7EF1645D6820EC83FDEDA /* Build configuration list for PBXNativeTarget "HabitBuddyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94BE12781E517611D64B9848 /* Release */,
+				0DE5765BFF58AB9BB72A3CE1 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

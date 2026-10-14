@@ -1,0 +1,110 @@
+//
+//  LabeledPicker.swift
+//  HabitBuddy
+//
+//  Created by Anastasiya Beginina on 16.10.2025.
+//
+
+import SwiftUI
+
+struct WeekdayPicker: View {
+    /// Foundation weekday numbers (1 = Sunday ... 7 = Saturday), matching
+    /// `Calendar.component(.weekday:)` and `StoredHabit.selectedDays`.
+    @Binding var selection: Set<Int>
+
+    private let selectedFill: Color = .accentColor
+    private let unselectedFill: Color = .TextField.border
+    private let textSelected: Color = .white
+    private let textUnselected: Color = .primary
+
+    private let size: CGFloat = 44
+    private let spacing: CGFloat = 10
+    private let calendar: Calendar = .current
+
+    /// Weekday numbers rotated so the locale's first weekday comes first.
+    private var orderedWeekdays: [Int] {
+        (0 ..< 7).map { ((calendar.firstWeekday - 1 + $0) % 7) + 1 }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Repeat on")
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.customBoldSubtitle)
+            HStack(spacing: spacing) {
+                ForEach(orderedWeekdays, id: \.self) { weekday in
+                    let isOn = selection.contains(weekday)
+                    Button {
+                        toggle(weekday)
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .fill(isOn ? selectedFill : unselectedFill)
+                            Text(shortSymbol(for: weekday).prefix(2).uppercased())
+                                .font(Font.customBoldSubtitle)
+                                .foregroundStyle(isOn ? textSelected : textUnselected)
+                        }
+                        .frame(width: size, height: size)
+                        .contentShape(Circle())
+                        .accessibilityLabel(longSymbol(for: weekday))
+                        .accessibilityValue(isOn ? "selected" : "not selected")
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            HStack(alignment: .lastTextBaseline) {
+                Button {
+                    withAnimation {
+                        if selection.count == 7 {
+                            selection.removeAll()
+                        } else {
+                            selection = Set(1 ... 7)
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: selection.count == 7 ? "checkmark.circle.fill" : "circle")
+                        Text("every day")
+                    }
+                    .font(Font.customSubtitle)
+                    .padding(.horizontal, 12).padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.TextField.border, lineWidth: 2)
+                    )
+                }
+                .buttonStyle(.plain)
+
+                if !selection.isEmpty, selection.count < 7 {
+                    Button("clear") {
+                        withAnimation {
+                            selection.removeAll()
+                        }
+                    }
+                        .font(Font.customSubtitle)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+
+    private func toggle(_ weekday: Int) {
+        if selection.contains(weekday) {
+            selection.remove(weekday)
+        } else {
+            selection.insert(weekday)
+        }
+    }
+
+    private func shortSymbol(for weekday: Int) -> String {
+        calendar.shortWeekdaySymbols[weekday - 1]
+    }
+
+    private func longSymbol(for weekday: Int) -> String {
+        calendar.weekdaySymbols[weekday - 1]
+    }
+}
+
+#Preview {
+    WeekdayPicker(selection: .constant([2, 3, 4]))
+}
